@@ -126,32 +126,80 @@ void main (void)
 	printf("Square wave generator for the EFM8LB1.\r\n"
 	       "Check pins P2.0 and P2.1 with the oscilloscope.\r\n");
 	
+
+		
+		
+
 	while(1)
-	{		
-		printf("Enter a number from -100 to 100: ");
-		scanf("%i\n", &input);
+	{	
+	
+	//FOR PUTTY//	
+	//	printf("Enter a number from -100 to 100: ");
+	//	scanf("%i\n", &input);
+	//FOR SWITCHES//
+	
+		LCDprint("WELCOME", 1, 1);
+		LCDprint("Press start!", 2, 1);
+	
+	if(P1_3 != 1){
 		
-		if (input == 0){ //nothing moves
-			pwm1 = 0;
-			pwm2 = 0;
-			direction = 0;
-		}
-		else if (input > 0){
-			pwm1 = input; //cw at pwm1 pin
-			pwm2 = 0;
-			direction = 1;
-		}
-		else{
-			pwm1 = 0;
-			pwm2 = -1 * input; //ccw at pwm2 pin
-			direction = -1;
-		}
 		
-		sprintf(LCD1, "PWM1(CW):  %i", pwm1);
-		LCDprint(LCD1, 1, 1);
-		sprintf(LCD2, "PWM2(CCW): %i", pwm2);
-		LCDprint(LCD2, 2, 1);
 		
-		printf("\n");
+		if(P1_2 != 0){
+			
+			while(1){
+	
+				if(P1_5 != 1){
+					if(input < 100){
+					input = input + 10;
+					}
+				}
+				
+				if(P1_4 != 1){
+					if(input > -100){
+					input = input - 10;
+					}
+				}
+					
+				if (input == 0){ //nothing moves
+					pwm1 = 0;
+					pwm2 = 0;
+					direction = 0;
+				}
+				else if (input > 0){
+					pwm1 = input; //cw at pwm1 pin
+					pwm2 = 0;
+					direction = 1;
+				}
+				else{
+					pwm1 = 0;
+					pwm2 = -1 * input; //ccw at pwm2 pin
+					direction = -1;
+					
+			
+				}
+				
+				sprintf(LCD1, "PWM1(CW):  %i", pwm1);
+				LCDprint(LCD1, 1, 1);
+				sprintf(LCD2, "PWM2(CCW): %i", pwm2);
+				LCDprint(LCD2, 2, 1);
+				
+				printf("\n");
+				
+				if(P1_2 != 1){
+					pwm1 = 0;
+					pwm2 = 0;
+					input = 0;
+					LCDprint("DONE", 1, 1);
+					LCDprint("Restarting...", 2, 1);
+					waitms(2000);
+					break;
+					}
+			} //inner while loop
+		} //P1_2
+	
 	}
-}
+	}//P1_3
+}//outer while
+
+
