@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <EFM8LB1.h>
+#include "pwm_EFM8_header.h"
 
 // ~C51~  
 
@@ -13,9 +14,9 @@
 #define BAUDRATE 115200L
 
 #define OUT0 P2_0
-#define OUT1 P2_1
-#define LEFT PX_X //Controller signal on left side of circuit
-#define RIGHT PX_X //Controller signal on right side of circuit
+#define OUT1 P1_7
+#define PUSH1 P1_4
+#define PUSH2 P1_5
 
 volatile unsigned char pwm_count=0;
 volatile unsigned int pwm1 = 0;
@@ -108,7 +109,7 @@ void Timer2_ISR (void) interrupt 5
 	pwm_count++;
 	if(pwm_count>100) pwm_count=0; //Interrupts every 0.1 ms
 	
-	OUT0=pwm_count>pwm1?0:1; //Generates square wave at P2.0
+	OUT0=pwm_count>pwm1?0:1; //Generates pwm1% square wave at P2.0
 	OUT1=pwm_count>pwm2?0:1; //Generates pwm2% duty cycle wave at P2.1
 }
 
@@ -116,15 +117,19 @@ void main (void)
 {
 	int input = 0;
 	int direction = 0;
+	xdata char LCD1[16];
+	xdata char LCD2[16];
+	
+	LCD_4BIT();
 	
 	printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
 	printf("Square wave generator for the EFM8LB1.\r\n"
 	       "Check pins P2.0 and P2.1 with the oscilloscope.\r\n");
-
+	
 	while(1)
-	{
+	{		
 		printf("Enter a number from -100 to 100: ");
-		scanf("%d\n", &input);
+		scanf("%i\n", &input);
 		
 		if (input == 0){ //nothing moves
 			pwm1 = 0;
@@ -132,29 +137,21 @@ void main (void)
 			direction = 0;
 		}
 		else if (input > 0){
-			pwm1 = input;
+			pwm1 = input; //cw at pwm1 pin
 			pwm2 = 0;
 			direction = 1;
 		}
 		else{
 			pwm1 = 0;
-			pwm2 = -1 * input;
+			pwm2 = -1 * input; //ccw at pwm2 pin
 			direction = -1;
 		}
 		
+		sprintf(LCD1, "PWM1(CW):  %i", pwm1);
+		LCDprint(LCD1, 1, 1);
+		sprintf(LCD2, "PWM2(CCW): %i", pwm2);
+		LCDprint(LCD2, 2, 1);
 		
-		
-		if (direction == 0){ //no movement, all off
-			RIGHT = 0;
-			LEFT = 0;
-		}
-		else if (direction == 1){ //cw
-			RIGHT = 1;
-			LEFT = 0;
-		}
-		else{ //ccw
-			RIGHT = 0;
-			LEFT = 1;
-		}
+		printf("\n");
 	}
 }
