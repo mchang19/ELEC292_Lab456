@@ -1,3 +1,7 @@
+// Lab4HeartRateMonitor.c: Uses a photosensitive finger clip to measure the heartrate and display it on an LCD.
+// Authors: Anna Yun and Magan Chang
+// Source code: Jesus Calvino-Fraga
+
 #include <EFM8LB1.h>
 #include <stdio.h>
 #include "Lab4HRMHeader.h"
