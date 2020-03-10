@@ -1,6 +1,9 @@
-//  square.c: Uses timer 2 interrupt to generate a square wave in pin
-//  P2.0 and a 75% duty cycle wave in pin P2.1
-//  Copyright (c) 2010-2018 Jesus Calvino-Fraga
+//  pwm_EFM8.c: Controls a motor using two PWM inputs. Both PWM inputs go from 0 to 100, controlling the power. PWM1
+//  controls clockwise rotation and PWM2 controls counter-clockwise rotation. The speed is controlled by push buttons
+//  and features a welcome/restart screen.
+//
+//  Authors: Anna Yun and Magan Chang
+//  Source code: Copyright (c) 2010-2018 Jesus Calvino-Fraga
 //  ~C51~
 
 #include <stdio.h>
