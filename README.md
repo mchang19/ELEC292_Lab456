@@ -1,5 +1,7 @@
 # ELEC 292 - Lab 4, 5, 6
 
+Partners: Anna Yun and Magan Chang
+
 ## **Lab 4:** Heart Rate Monitor
   - Designing, building, programming, and testing a microcontroller-based photoelectric heart rate monitor. The monitor measures
     the heart rate in beats per minute (BPM) using a photo transmitter/receiver pair sensor.
